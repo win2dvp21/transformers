@@ -670,8 +670,8 @@
       - local: in_translation
         title: (번역중) Chinese-CLIP
       - local: in_translation
-        title: (번역중) CLIP
-      - local: in_translation
+        title: model_doc/clip
+      - local: CLIP
         title: (번역중) CLIPSeg
       - local: in_translation
         title: (번역중) Data2Vec
