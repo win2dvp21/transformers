@@ -14,50 +14,25 @@ rendered properly in your Markdown viewer.
 
 -->
 
-# CLIP
+# CLIP [[clip]]
 
-## Overview
+## 개요 [[overview]]
 
-The CLIP model was proposed in [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020) by Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh,
-Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, Ilya Sutskever. CLIP
-(Contrastive Language-Image Pre-Training) is a neural network trained on a variety of (image, text) pairs. It can be
-instructed in natural language to predict the most relevant text snippet, given an image, without directly optimizing
-for the task, similarly to the zero-shot capabilities of GPT-2 and 3.
+CLIP 모델은 Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, Ilya Sutskever에 의해 제안된 [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020) 논문에서 제시되었습니다. CLIP(Contrastive Language-Image Pre-Training)는 다양한 (이미지, 텍스트) 쌍으로 학습된 신경망입니다. 이 모델은 자연어로 이미지를 주어 가장 관련성 높은 텍스트 스니펫을 예측하도록 지시할 수 있으며, 이를 위한 작업을 직접 최적화하지 않고도 GPT-2와 3의 zero-shot 기능과 유사한 방식으로 작동합니다.
 
-The abstract from the paper is the following:
+논문의 초록은 다음과 같습니다:
 
-*State-of-the-art computer vision systems are trained to predict a fixed set of predetermined object categories. This
-restricted form of supervision limits their generality and usability since additional labeled data is needed to specify
-any other visual concept. Learning directly from raw text about images is a promising alternative which leverages a
-much broader source of supervision. We demonstrate that the simple pre-training task of predicting which caption goes
-with which image is an efficient and scalable way to learn SOTA image representations from scratch on a dataset of 400
-million (image, text) pairs collected from the internet. After pre-training, natural language is used to reference
-learned visual concepts (or describe new ones) enabling zero-shot transfer of the model to downstream tasks. We study
-the performance of this approach by benchmarking on over 30 different existing computer vision datasets, spanning tasks
-such as OCR, action recognition in videos, geo-localization, and many types of fine-grained object classification. The
-model transfers non-trivially to most tasks and is often competitive with a fully supervised baseline without the need
-for any dataset specific training. For instance, we match the accuracy of the original ResNet-50 on ImageNet zero-shot
-without needing to use any of the 1.28 million training examples it was trained on. We release our code and pre-trained
-model weights at this https URL.*
+*최첨단 컴퓨터 비전 시스템은 고정된 사전 결정된 객체 카테고리를 예측하도록 학습됩니다. 이 제한된 형태의 감독은 이들의 일반성과 사용성을 제한하며, 다른 시각적 개념을 지정하려면 추가로 라벨링된 데이터가 필요합니다. 이미지를 설명하는 텍스트로부터 직접 학습하는 것은 훨씬 더 폭넓은 감독 소스를 활용하는 유망한 대안입니다. 우리는 4억 개의 (이미지, 텍스트) 쌍으로 구성된 데이터셋에서 캡션과 이미지가 일치하는지를 예측하는 단순한 사전 학습 작업이 최첨단(SOTA) 이미지 표현을 처음부터 효율적이고 확장 가능하게 학습할 수 있는 방법임을 입증합니다. 사전 학습 후에는 자연어를 사용하여 학습된 시각적 개념을 참조하거나 새로운 개념을 설명할 수 있으며, 이를 통해 모델을 후속 작업으로 zero-shot 전환할 수 있습니다. 우리는 OCR, 비디오 내 동작 인식, 지리적 위치 지정, 세밀한 객체 분류 등의 다양한 컴퓨터 비전 데이터셋을 포함한 30개 이상의 기존 데이터셋에서 이 접근법의 성능을 연구합니다. 이 모델은 대부분의 작업에서 비지도 학습된 베이스라인과 경쟁할 수 있으며, 데이터셋별 학습이 필요하지 않습니다. 예를 들어, 우리는 ResNet-50의 원래 ImageNet zero-shot 정확도를 1.28백만 개의 학습 예제 없이도 맞춥니다. 우리는 이 코드와 사전 학습된 모델 가중치를 공개합니다.* 
 
-This model was contributed by [valhalla](https://huggingface.co/valhalla). The original code can be found [here](https://github.com/openai/CLIP).
+이 모델은 [valhalla](https://huggingface.co/valhalla)에 의해 제공되었습니다. 원본 코드는 [여기](https://github.com/openai/CLIP)에서 확인할 수 있습니다.
 
-## Usage tips and example
+## 사용 팁 및 예시 [[usage-tips-and-example]]
 
-CLIP is a multi-modal vision and language model. It can be used for image-text similarity and for zero-shot image
-classification. CLIP uses a ViT like transformer to get visual features and a causal language model to get the text
-features. Both the text and visual features are then projected to a latent space with identical dimension. The dot
-product between the projected image and text features is then used as a similar score.
+CLIP은 다중 모달 비전 및 언어 모델입니다. 이미지-텍스트 유사도 계산 및 zero-shot 이미지 분류에 사용할 수 있습니다. CLIP은 ViT 유사한 트랜스포머를 사용하여 시각적 특징을 얻고, 인과적 언어 모델을 사용하여 텍스트 특징을 얻습니다. 그 후 텍스트와 시각적 특징 모두 동일한 차원의 잠재 공간에 투영됩니다. 투영된 이미지와 텍스트 특징 간의 내적 곱(dot product)을 사용하여 유사 점수를 계산합니다.
 
-To feed images to the Transformer encoder, each image is split into a sequence of fixed-size non-overlapping patches,
-which are then linearly embedded. A [CLS] token is added to serve as representation of an entire image. The authors
-also add absolute position embeddings, and feed the resulting sequence of vectors to a standard Transformer encoder.
-The [`CLIPImageProcessor`] can be used to resize (or rescale) and normalize images for the model.
+트랜스포머 인코더에 이미지를 입력하려면, 각 이미지를 고정된 크기의 겹치지 않는 패치로 나누고 이를 선형적으로 임베딩합니다. [CLS] 토큰이 전체 이미지를 나타내는 역할을 하도록 추가됩니다. 저자들은 또한 절대 위치 임베딩을 추가하고, 그 결과 벡터 시퀀스를 표준 트랜스포머 인코더에 입력합니다. [`CLIPImageProcessor`]는 모델에 이미지를 크기 조정(또는 스케일링)하고 정규화하는 데 사용할 수 있습니다.
 
-The [`CLIPTokenizer`] is used to encode the text. The [`CLIPProcessor`] wraps
-[`CLIPImageProcessor`] and [`CLIPTokenizer`] into a single instance to both
-encode the text and prepare the images. The following example shows how to get the image-text similarity scores using
-[`CLIPProcessor`] and [`CLIPModel`].
+[`CLIPTokenizer`]는 텍스트를 인코딩하는 데 사용됩니다. [`CLIPProcessor`]는 [`CLIPImageProcessor`]와 [`CLIPTokenizer`]를 단일 인스턴스로 감싸 텍스트를 인코딩하고 이미지를 준비할 수 있습니다. 다음 예시는 [`CLIPProcessor`]와 [`CLIPModel`]을 사용하여 이미지-텍스트 유사도 점수를 얻는 방법을 보여줍니다.
 
 
 ```python
@@ -80,23 +55,23 @@ encode the text and prepare the images. The following example shows how to get t
 ```
 
 
-### Combining CLIP and Flash Attention 2
+### CLIP과 Flash Attention 2의 결합 [[combining-clip-and-flash-attention-2]]
 
-First, make sure to install the latest version of Flash Attention 2.
+먼저, 최신 버전의 Flash Attention 2를 설치해야 합니다.
 
 ```bash
 pip install -U flash-attn --no-build-isolation
 ```
 
-Make also sure that you have a hardware that is compatible with Flash-Attention 2. Read more about it in the official documentation of flash-attn repository. Make also sure to load your model in half-precision (e.g. `torch.float16`)
+또한 Flash-Attention 2와 호환되는 하드웨어를 사용하는지 확인하세요. flash-attn 리포지토리의 공식 문서에서 이에 대해 더 자세히 알아볼 수 있습니다. 모델을 하프 프리시전(예: `torch.float16`)으로 로드하는 것도 잊지 마세요.
 
 <Tip warning={true}>
 
-For small batch sizes, you might notice a slowdown in your model when using flash attention. Refer to the section [Expected speedups with Flash Attention and SDPA](#Expected-speedups-with-Flash-Attention-and-SDPA) below and select an appropriate attention implementation.
+작은 배치 크기의 경우 Flash Attention을 사용할 때 모델이 느려질 수 있습니다. 아래의 [Flash Attention과 SDPA를 사용한 예상 속도 향상](#Expected-speedups-with-Flash-Attention-and-SDPA) 섹션을 참고하여 적절한 어텐션 구현을 선택하세요.
 
 </Tip>
 
-To load and run a model using Flash Attention 2, refer to the snippet below:
+Flash Attention 2를 사용하여 모델을 로드하고 실행하는 방법은 아래 코드를 참조하세요:
 
 ```python
 >>> import torch
@@ -133,16 +108,11 @@ tensor([[0.9946, 0.0052]], device='cuda:0', dtype=torch.float16)
 ```
 
 
-### Using Scaled Dot Product Attention (SDPA)
+### Scaled Dot Product Attention(SDPA)의 사용 [[using-scaled-dot-product-attention-sdpa]]
 
-PyTorch includes a native scaled dot-product attention (SDPA) operator as part of `torch.nn.functional`. This function 
-encompasses several implementations that can be applied depending on the inputs and the hardware in use. See the 
-[official documentation](https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html) 
-or the [GPU Inference](https://huggingface.co/docs/transformers/main/en/perf_infer_gpu_one#pytorch-scaled-dot-product-attention)
-page for more information.
+PyTorch는 `torch.nn.functional`의 일부로 기본 Scaled Dot-Product Attention(SDPA) 연산자를 포함하고 있습니다. 이 함수는 입력과 사용하는 하드웨어에 따라 여러 구현을 적용할 수 있습니다. 자세한 내용은 [공식 문서](https://pytorch.org/docs/stable/generated/torch.nn.functional.scaled_dot_product_attention.html) 또는 [GPU 추론](https://huggingface.co/docs/transformers/main/en/perf_infer_gpu_one#pytorch-scaled-dot-product-attention) 페이지를 참조하세요.
 
-SDPA is used by default for `torch>=2.1.1` when an implementation is available, but you may also set 
-`attn_implementation="sdpa"` in `from_pretrained()` to explicitly request SDPA to be used.
+SDPA는 `torch>=2.1.1`에서 구현이 가능한 경우 기본적으로 사용되지만, `attn_implementation="sdpa"`를 `from_pretrained()`에 설정하여 SDPA 사용을 명시적으로 요청할 수도 있습니다.
 
 ```python
 from transformers import CLIPModel
@@ -150,13 +120,13 @@ from transformers import CLIPModel
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", torch_dtype=torch.float16, attn_implementation="sdpa")
 ```
 
-For the best speedups, we recommend loading the model in half-precision (e.g. `torch.float16` or `torch.bfloat16`).
+최상의 속도 향상을 위해 모델을 하프 프리시전(예: `torch.float16` 또는 `torch.bfloat16`)으로 로드하는 것을 권장합니다.
 
-### Expected speedups with Flash Attention and SDPA
+### Flash Attention과 SDPA로 인한 예상 속도 향상 [[expected-speedups-with-flash-attention-and-sdpa]]
 
-On a local benchmark (NVIDIA A10G, PyTorch 2.3.1+cu121) with `float16`, we saw the following speedups during inference for `"openai/clip-vit-large-patch14"` checkpoint ([code](https://gist.github.com/qubvel/ac691a54e54f9fae8144275f866a7ff8)):
+로컬 벤치마크(NVIDIA A10G, PyTorch 2.3.1+cu121)에서 `float16`을 사용하여 `"openai/clip-vit-large-patch14"` 체크포인트에 대한 추론 시 다음과 같은 속도 향상이 있었습니다([코드](https://gist.github.com/qubvel/ac691a54e54f9fae8144275f866a7ff8)):
 
-#### CLIPTextModel
+#### CLIPTextModel [[cliptextmodel]]
 
 |   Num text labels |   Eager (s/iter) |   FA2 (s/iter) |   FA2 speedup |   SDPA (s/iter) |   SDPA speedup |
 |------------------:|-----------------:|---------------:|--------------:|----------------:|---------------:|
@@ -168,7 +138,7 @@ On a local benchmark (NVIDIA A10G, PyTorch 2.3.1+cu121) with `float16`, we saw t
 
 ![clip_text_model_viz_3](https://github.com/user-attachments/assets/e9826b43-4e66-4f4c-952b-af4d90bd38eb)
 
-#### CLIPVisionModel
+#### CLIPVisionModel [[clipvisionmodel]]
 
 |   Image batch size |   Eager (s/iter) |   FA2 (s/iter) |   FA2 speedup |   SDPA (s/iter) |   SDPA speedup |
 |-------------------:|-----------------:|---------------:|--------------:|----------------:|---------------:|
@@ -179,7 +149,7 @@ On a local benchmark (NVIDIA A10G, PyTorch 2.3.1+cu121) with `float16`, we saw t
 
 ![clip_image_model_viz_3](https://github.com/user-attachments/assets/50a36206-e3b9-4adc-ac8e-926b8b071d63)
 
-#### CLIPModel
+#### CLIPModel [[clipmodel]]
 
 |   Image batch size |   Num text labels |   Eager (s/iter) |   FA2 (s/iter) |   FA2 speedup |   SDPA (s/iter) |   SDPA speedup |
 |-------------------:|------------------:|-----------------:|---------------:|--------------:|----------------:|---------------:|
@@ -196,45 +166,44 @@ On a local benchmark (NVIDIA A10G, PyTorch 2.3.1+cu121) with `float16`, we saw t
 |                 32 |                16 |            0.19  |          0.162 |         1.177 |           0.154 |          1.233 |
 |                 32 |                64 |            0.216 |          0.181 |         1.19  |           0.176 |          1.228 |
 
-## Resources
+## 리소스 [[resources]]
 
-A list of official Hugging Face and community (indicated by 🌎) resources to help you get started with CLIP.
+🤗 및 커뮤니티(🌎로 표시) 리소스 목록은 CLIP 사용을 시작하는 데 도움을 줄 것입니다.
 
-- [Fine tuning CLIP with Remote Sensing (Satellite) images and captions](https://huggingface.co/blog/fine-tune-clip-rsicd), a blog post about how to fine-tune CLIP with [RSICD dataset](https://github.com/201528014227051/RSICD_optimal) and comparison of performance changes due to data augmentation.
-- This [example script](https://github.com/huggingface/transformers/tree/main/examples/pytorch/contrastive-image-text) shows how to train a CLIP-like vision-text dual encoder model using a pre-trained vision and text encoder using [COCO dataset](https://cocodataset.org/#home).
+- [원격 감지(위성) 이미지와 캡션으로 CLIP 미세 조정하기](https://huggingface.co/blog/fine-tune-clip-rsicd), RSICD 데이터셋과 데이터 증강으로 인한 성능 변화를 비교한 CLIP 미세 조정에 대한 블로그 포스트입니다.
+- 이 [예시 스크립트](https://github.com/huggingface/transformers/tree/main/examples/pytorch/contrastive-image-text)는 미리 학습된 비전 및 텍스트 인코더를 사용하여 CLIP 유사한 비전-텍스트 이중 인코더 모델을 훈련하는 방법을 보여줍니다 [COCO 데이터셋](https://cocodataset.org/#home).
 
 <PipelineTag pipeline="image-to-text"/>
 
-- A [notebook](https://colab.research.google.com/drive/1tuoAC5F4sC7qid56Z0ap-stR3rwdk0ZV?usp=sharing) on how to use a pretrained CLIP for inference with beam search for image captioning. 🌎
+- 사전 학습된 CLIP을 사용하여 빔 서치로 이미지 캡셔닝 추론을 수행하는 방법에 대한 [노트북](https://colab.research.google.com/drive/1tuoAC5F4sC7qid56Z0ap-stR3rwdk0ZV?usp=sharing) 🌎
 
-**Image retrieval**
+**이미지 검색**
 
-- A [notebook](https://colab.research.google.com/drive/1bLVwVKpAndpEDHqjzxVPr_9nGrSbuOQd?usp=sharing) on image retrieval using pretrained CLIP and computing MRR(Mean Reciprocal Rank) score. 🌎
-- A [notebook](https://colab.research.google.com/github/deep-diver/image_search_with_natural_language/blob/main/notebooks/Image_Search_CLIP.ipynb) on image retrieval and showing the similarity score. 🌎
-- A [notebook](https://colab.research.google.com/drive/1xO-wC_m_GNzgjIBQ4a4znvQkvDoZJvH4?usp=sharing) on how to map images and texts to the same vector space using Multilingual CLIP. 🌎 
-- A [notebook](https://colab.research.google.com/github/vivien000/clip-demo/blob/master/clip.ipynb#scrollTo=uzdFhRGqiWkR) on how to run CLIP on semantic image search using [Unsplash](https://unsplash.com) and [TMDB](https://www.themoviedb.org/) datasets. 🌎
+- 사전 학습된 CLIP을 사용한 이미지 검색 및 MRR(Mean Reciprocal Rank) 점수 계산에 관한 [노트북](https://colab.research.google.com/drive/1bLVwVKpAndpEDHqjzxVPr_9nGrSbuOQd?usp=sharing) 🌎
+- 이미지 검색 및 유사도 점수를 보여주는 [노트북](https://colab.research.google.com/github/deep-diver/image_search_with_natural_language/blob/main/notebooks/Image_Search_CLIP.ipynb) 🌎
+- 다국어 CLIP을 사용하여 이미지와 텍스트를 동일한 벡터 공간으로 매핑하는 방법에 관한 [노트북](https://colab.research.google.com/drive/1xO-wC_m_GNzgjIBQ4a4znvQkvDoZJvH4?usp=sharing) 🌎
+- [Unsplash](https://unsplash.com) 및 [TMDB](https://www.themoviedb.org/) 데이터셋을 사용하여 CLIP을 실행하는 방법에 관한 [노트북](https://colab.research.google.com/github/vivien000/clip-demo/blob/master/clip.ipynb#scrollTo=uzdFhRGqiWkR) 🌎
 
-**Explainability**
+**설명 가능성**
 
-- A [notebook](https://colab.research.google.com/github/hila-chefer/Transformer-MM-Explainability/blob/main/CLIP_explainability.ipynb) on how to visualize similarity between input token and image segment. 🌎
+- 입력 토큰과 이미지 세그먼트 간의 유사성을 시각화하는 방법에 관한 [노트북](https://colab.research.google.com/github/hila-chefer/Transformer-MM-Explainability/blob/main/CLIP_explainability.ipynb) 🌎
 
-If you're interested in submitting a resource to be included here, please feel free to open a Pull Request and we will review it.
-The resource should ideally demonstrate something new instead of duplicating an existing resource.
+여기에 포함될 리소스를 제출하고 싶다면, 자유롭게 Pull Request를 열어 주시면 검토하겠습니다. 리소스는 기존 리소스를 중복하지 않고 새로운 무언가를 시연하는 것이 이상적입니다.
 
-## CLIPConfig
+## CLIPConfig [[clipconfig]]
 
 [[autodoc]] CLIPConfig
     - from_text_vision_configs
 
-## CLIPTextConfig
+## CLIPTextConfig [[cliptextconfig]]
 
 [[autodoc]] CLIPTextConfig
 
-## CLIPVisionConfig
+## CLIPVisionConfig [[clipvisionconfig]]
 
 [[autodoc]] CLIPVisionConfig
 
-## CLIPTokenizer
+## CLIPTokenizer [[cliptokenizer]]
 
 [[autodoc]] CLIPTokenizer
     - build_inputs_with_special_tokens
@@ -242,54 +211,54 @@ The resource should ideally demonstrate something new instead of duplicating an 
     - create_token_type_ids_from_sequences
     - save_vocabulary
 
-## CLIPTokenizerFast
+## CLIPTokenizerFast [[cliptokenizerfast]]
 
 [[autodoc]] CLIPTokenizerFast
 
-## CLIPImageProcessor
+## CLIPImageProcessor [[clipimageprocessor]]
 
 [[autodoc]] CLIPImageProcessor
     - preprocess
 
-## CLIPFeatureExtractor
+## CLIPFeatureExtractor [[clipfeatureextractor]]
 
 [[autodoc]] CLIPFeatureExtractor
 
-## CLIPProcessor
+## CLIPProcessor [[clipprocessor]]
 
 [[autodoc]] CLIPProcessor
 
 <frameworkcontent>
 <pt>
 
-## CLIPModel
+## CLIPModel [[clipmodel]]
 
 [[autodoc]] CLIPModel
     - forward
     - get_text_features
     - get_image_features
 
-## CLIPTextModel
+## CLIPTextModel [[cliptextmodel]]
 
 [[autodoc]] CLIPTextModel
     - forward
 
-## CLIPTextModelWithProjection
+## CLIPTextModelWithProjection [[cliptextmodelwithprojection]]
 
 [[autodoc]] CLIPTextModelWithProjection
     - forward
 
-## CLIPVisionModelWithProjection
+## CLIPVisionModelWithProjection [[clipvisionmodelwithprojection]]
 
 [[autodoc]] CLIPVisionModelWithProjection
     - forward
 
-## CLIPVisionModel
+## CLIPVisionModel [[clipvisionmodel]]
 
 [[autodoc]] CLIPVisionModel
     - forward
 
-## CLIPForImageClassification
+## CLIPForImageClassification [[clipforimageclassification]]
 
 [[autodoc]] CLIPForImageClassification
     - forward
@@ -297,19 +266,19 @@ The resource should ideally demonstrate something new instead of duplicating an 
 </pt>
 <tf>
 
-## TFCLIPModel
+## TFCLIPModel [[tfclipmodel]]
 
 [[autodoc]] TFCLIPModel
     - call
     - get_text_features
     - get_image_features
 
-## TFCLIPTextModel
+## TFCLIPTextModel [[tfcliptextmodel]]
 
 [[autodoc]] TFCLIPTextModel
     - call
 
-## TFCLIPVisionModel
+## TFCLIPVisionModel [[tfclipvisionmodel]]
 
 [[autodoc]] TFCLIPVisionModel
     - call
@@ -317,24 +286,24 @@ The resource should ideally demonstrate something new instead of duplicating an 
 </tf>
 <jax>
 
-## FlaxCLIPModel
+## FlaxCLIPModel [[flaxclipmodel]]
 
 [[autodoc]] FlaxCLIPModel
     - __call__
     - get_text_features
     - get_image_features
 
-## FlaxCLIPTextModel
+## FlaxCLIPTextModel [[flaxcliptextmodel]]
 
 [[autodoc]] FlaxCLIPTextModel
     - __call__
 
-## FlaxCLIPTextModelWithProjection
+## FlaxCLIPTextModelWithProjection [[flaxcliptextmodelwithprojection]]
 
 [[autodoc]] FlaxCLIPTextModelWithProjection
     - __call__
 
-## FlaxCLIPVisionModel
+## FlaxCLIPVisionModel [[flaxclipvisionmodel]]
 
 [[autodoc]] FlaxCLIPVisionModel
     - __call__
